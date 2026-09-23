@@ -75,20 +75,6 @@ export default function About() {
                     </div>
                 </div>
 
-                {/* اطلاعات تماس */}
-                <div className="space-y-3 rounded-2xl border border-border bg-surface p-5 md:space-y-4 md:p-8">
-                    <h2 className="text-lg md:text-xl font-bold text-text">
-                        تماس با ما
-                    </h2>
-
-                    <div className="text-text-soft space-y-1 md:space-y-2 text-sm md:text-base">
-                        <p>دانشگاه نمونه</p>
-                        <p>مرکز فناوری اطلاعات</p>
-                        <p>ایمیل: info@university.ac.ir</p>
-                        <p>تلفن: ۰۲۱-۱۲۳۴۵۶۷۸</p>
-                    </div>
-                </div>
-
             </div>
         </div>
     );

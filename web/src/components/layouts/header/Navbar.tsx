@@ -7,6 +7,7 @@ import {
     FiHome,
     FiInfo,
     FiLogIn,
+    FiPhoneCall,
     FiUsers,
 } from "react-icons/fi";
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -27,6 +28,7 @@ export default function Navbar() {
         { label: "اساتید", href: ROUTES.Professors, icon: FiUsers },
         { label: "دانشکده‌ها", href: ROUTES.Faculties, icon: FiBookOpen },
         { label: "درباره", href: ROUTES.AboutUs, icon: FiInfo },
+        { label: "تماس با ما", href: ROUTES.ContactUs, icon: FiPhoneCall },
         {
             label: isAuthenticated ? "داشبورد" : "ورود",
             href: isAuthenticated ? ROUTES.Dashboard : ROUTES.Login,
@@ -73,7 +75,7 @@ export default function Navbar() {
                 aria-label="ناوبری اصلی موبایل"
                 className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-surface/95 px-2 pt-2 pb-[calc(.5rem+env(safe-area-inset-bottom))] shadow-[0_-8px_30px_rgba(30,61,57,0.10)] backdrop-blur-xl lg:hidden"
             >
-                <ul className="mx-auto grid max-w-lg grid-cols-5 gap-1">
+                <ul className="mx-auto grid max-w-xl grid-cols-6 gap-0.5 sm:gap-1">
                     {mobileItems.map((item) => {
                         const Icon = item.icon;
                         const active = isActive(item.href);
