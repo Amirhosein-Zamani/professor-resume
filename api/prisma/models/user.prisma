@@ -1,0 +1,21 @@
+model User {
+  id          String     @id @default(uuid())
+  email       String     @unique
+  role        UserRole   @default(EDITOR)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  professorId String?    @unique
+  professor   Professor? @relation(fields: [professorId], references: [id])
+
+  @@map("users")
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
+}
+
+enum FormTarget {
+  PROFESSOR
+  ACTIVITY
+}

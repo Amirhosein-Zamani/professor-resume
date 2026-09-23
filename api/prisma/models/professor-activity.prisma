@@ -1,0 +1,18 @@
+model ProfessorActivity {
+  id          String    @id @default(uuid())
+  sourceId    String?
+  type        String
+  titleFa     String?
+  titleEn     String?
+  description String?
+  date        DateTime?
+  sortOrder   Int       @default(0)
+  professorId String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  professor   Professor @relation(fields: [professorId], references: [id], onDelete: Cascade)
+
+  @@index([professorId, sortOrder])
+  @@index([sourceId])
+  @@map("professor_activities")
+}

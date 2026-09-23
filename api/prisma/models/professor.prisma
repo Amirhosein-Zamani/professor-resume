@@ -1,0 +1,49 @@
+model Professor {
+  id                  String              @id @default(uuid())
+  golestanProfessorNo String?             @unique
+  employeeNo          String?             @unique
+  studentNo           String?
+  facultyName         String?
+  researchGroupName   String?
+  organizationName    String?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  slug                String              @unique
+  firstName           String
+  lastName            String
+  displayName         String
+  nationalCode        String?             @unique
+  rank                String
+  faculty             String
+  facultyId           String
+  facultyRecord       Faculty             @relation(fields: [facultyId], references: [id], onDelete: Restrict)
+  specialty           String?
+  isFaculty           Boolean             @default(false)
+  avatar              String
+  email               String?
+  cvUrl               String?
+  bio                 String?
+  activities          ProfessorActivity[]
+  links               ProfessorLink?
+  publications        Publication[]
+  user                User?
+
+  @@index([lastName, firstName])
+  @@index([displayName])
+  @@index([facultyId])
+  @@map("professors")
+}
+
+model ProfessorLink {
+  id           String    @id @default(uuid())
+  professorId  String    @unique
+  scholar      String?
+  researchgate String?
+  scopus       String?
+  website      String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  professor    Professor @relation(fields: [professorId], references: [id], onDelete: Cascade)
+
+  @@map("professor_links")
+}

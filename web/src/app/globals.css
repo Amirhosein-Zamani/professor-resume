@@ -1,0 +1,29 @@
+@import "./fonts.css";
+@import "tailwindcss";
+@import "./colors.css";
+
+body {
+  font-family: "Vazir FD", sans-serif, "Vazir";
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-width: 320px;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+button,
+a,
+input,
+textarea {
+  touch-action: manipulation;
+}
+
+::selection {
+  background: var(--color-base-jade-2);
+  color: var(--color-base-jade-6);
+}

@@ -1,0 +1,10 @@
+model FormSchema {
+  id        String     @id @default(uuid())
+  target    FormTarget @unique
+  title     String
+  schema    Json
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("form_schemas")
+}

@@ -1,0 +1,81 @@
+@theme inline {
+  /* ---------------------------------------- */
+  /* Layer 1 — Base Colors (Vintage Library & Jade) */
+  /* ---------------------------------------- */
+
+  --color-base-light: #fcfbf8;    /* سفید گرم (رنگ کاغذ تازه) */
+  --color-base-dark: #121a18;     /* مشکی با تهية بسیار محو سبز */
+
+  /* Warm Paper scale — رنگ‌های گرم کاغذی برای پس‌زمینه که چشم را نوازش می‌دهند */
+  --color-base-gray-0: #fbf8f3;   /* کرم بسیار ملایم (حس نور گرم) */
+  --color-base-gray-1: #f3eee7;   /* رنگ کاغذ کتاب */
+  --color-base-gray-2: #e4ddd4;   /* بژ ملایم برای حاشیه‌ها */
+  --color-base-gray-3: #c2b9af;   /* خاکستری گرم */
+  --color-base-gray-4: #928b82;   /* رنگ نوشته‌های فرعی */
+  --color-base-gray-5: #5c5751;   /* خاکستری سنگی تیره */
+  --color-base-gray-6: #2f2c28;   /* رنگ متن اصلی (قهوه‌ای/خاکستری بسیار تیره و نرم) */
+
+  /* Deep Jade & Teal Tones — سبز یشمی/فیروزه‌ای خاص و اصیل */
+  --color-base-jade-0: #f0f5f4;
+  --color-base-jade-1: #dbe8e6;
+  --color-base-jade-2: #b5cfcb;
+  --color-base-jade-3: #82aba6;
+  --color-base-jade-4: #487f78;   /* سبز یشمی/فیروزه‌ای خاص (رنگ اصلی دکمه‌ها و لینک‌ها) */
+  --color-base-jade-5: #31605a;   /* یشمی پخته و تیره */
+  --color-base-jade-6: #1e3d39;   /* سبز بسیار عمیق و لوکس برای هدر و فوتر */
+
+  /* Warm Copper Accent — رنگ مسی/کاراملی برای ایجاد گرما در کنار رنگ سبز */
+  --color-base-accent: #c47b57;
+
+  /* ---------------------------------------- */
+  /* Layer 2 — Semantic Colors */
+  /* ---------------------------------------- */
+
+  --color-bg: var(--color-base-gray-0);
+  --color-bg-soft: var(--color-base-gray-1);
+
+  --color-surface: var(--color-base-light);
+  --color-surface-alt: var(--color-base-gray-0);
+
+  --color-text: var(--color-base-gray-6);
+  --color-text-soft: var(--color-base-gray-5);
+  --color-text-muted: var(--color-base-gray-4);
+
+  --color-border: var(--color-base-gray-2);
+
+  /* ---------------------------------------- */
+  /* Layer 3 — Component Colors */
+  /* ---------------------------------------- */
+
+  /* Header (رنگ سبز عمیق و آرامش‌بخش کتابخانه‌ای) */
+  --color-header-bg: var(--color-base-jade-6);
+  --color-header-text: #fcfbf8;
+
+  /* Footer */
+  --color-footer-bg: var(--color-base-jade-5);
+  --color-footer-text: #fcfbf8;
+
+  /* Cards */
+  --color-card-bg: var(--color-surface);
+  --color-card-border: var(--color-border);
+
+  /* Buttons */
+  --color-button-primary: var(--color-base-jade-6);
+  --color-button-primary-text: #ffffff;
+  --color-button-primary-hover: var(--color-base-jade-5);
+
+  --color-button-ghost: transparent;
+
+  /* Links */
+  --color-link: var(--color-base-jade-4);
+  --color-link-hover: var(--color-base-accent); /* تغییر رنگ به مسی هنگام هاور که جذابیت بالایی دارد */
+
+  /* ---------------------------------------- */
+  /* Layer 4 — Utility Colors */
+  /* ---------------------------------------- */
+
+  --color-success: #648261; /* سبز زیتونی روشن‌تر برای پیام‌های موفقیت */
+  --color-warning: #cba258; /* طلایی چرک */
+  --color-danger: #ab5e5e;  /* قرمز آجری */
+  --color-info: var(--color-base-jade-3);
+}
