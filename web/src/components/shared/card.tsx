@@ -13,7 +13,7 @@ type CardProps = {
 };
 
 function getAvatarSrc(avatar: string): string {
-    if (!avatar) return "/Images/default-avatar.png";
+    if (!avatar) return "/Images/npr.png";
     if (avatar.startsWith("/") || avatar.startsWith("http")) return avatar;
     return `data:image/webp;base64,${avatar}`;
 }
@@ -43,7 +43,7 @@ function Card({ professors }: CardProps) {
                                         className="h-16 w-16 rounded-full border-2 object-cover sm:h-20 sm:w-20"
                                         style={{ borderColor: "var(--color-base-jade-3)" }}
                                         onError={(e) => {
-                                            (e.target as HTMLImageElement).src = "/Images/default-avatar.png";
+                                            (e.target as HTMLImageElement).src = "/Images/npr.png";
                                         }}
                                     />
                                 </div>

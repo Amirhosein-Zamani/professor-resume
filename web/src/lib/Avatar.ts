@@ -23,7 +23,7 @@ export function toAvatarSrc(avatarBase64?: string | null): string | null {
 
 
 export function getAvatarSrc(avatar?: string | null): string {
-    if (!avatar) return "/Images/default-avatar.png";
+    if (!avatar) return "/Images/npr.png";
 
     if (avatar.startsWith("/") || avatar.startsWith("http") || avatar.startsWith("data:")) {
         return avatar;

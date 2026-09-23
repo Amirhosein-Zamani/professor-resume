@@ -1,7 +1,6 @@
 import { PrismaClient, UserRole } from '@prisma/client';
 
-const DEFAULT_PROFESSOR_AVATAR = '/Images/image0.jpg';
-const UNASSIGNED_FACULTY = 'تخصیص‌نیافته';
+const DEFAULT_PROFESSOR_AVATAR = '/Images/npr.png';
 
 type ProfessorSeedItem = {
   slug: string;
@@ -10,9 +9,12 @@ type ProfessorSeedItem = {
   displayName: string;
   rank: string;
   email?: string;
-  faculty?: string;
-  specialty?: string;
-  researchGroupName?: string;
+};
+
+type ProfessorProfileSeed = {
+  faculty: string;
+  specialty: string;
+  avatar?: string;
 };
 
 export const PROFESSORS_SEED: ProfessorSeedItem[] = [
@@ -39,8 +41,6 @@ export const PROFESSORS_SEED: ProfessorSeedItem[] = [
     displayName: 'Mohammad Asyaei',
     rank: 'استادیار',
     email: 'm.asyaei@du.ac.ir',
-    specialty: 'مهندسی الکترونیک',
-    researchGroupName: 'مهندسی الکترونیک',
   },
   {
     slug: 's-hamideh-erfani',
@@ -65,9 +65,6 @@ export const PROFESSORS_SEED: ProfessorSeedItem[] = [
     displayName: 'Asghar Feizi',
     rank: 'استادیار',
     email: 'a.feizi@du.ac.ir',
-    faculty: 'دانشکده مهندسی برق',
-    specialty: 'مهندسی برق',
-    researchGroupName: 'مهندسی برق',
   },
   {
     slug: 'seyed-hadi-rostamian',
@@ -116,8 +113,6 @@ export const PROFESSORS_SEED: ProfessorSeedItem[] = [
     displayName: 'Behnam Pourhassan Tanabchi',
     rank: 'استاد',
     email: 'b.pourhassan@du.ac.ir',
-    specialty: 'فیزیک ذرات و میدان‌ها',
-    researchGroupName: 'ذرات و میدان‌ها',
   },
   {
     slug: 'motahareh-mohammadpour',
@@ -139,8 +134,6 @@ export const PROFESSORS_SEED: ProfessorSeedItem[] = [
     lastName: 'Pourmousavi',
     displayName: 'Seied Ali Pourmousavi',
     rank: 'استاد',
-    specialty: 'شیمی آلی',
-    researchGroupName: 'شیمی آلی',
   },
   {
     slug: 'ahmad-soleymanpour',
@@ -199,12 +192,115 @@ export const PROFESSORS_SEED: ProfessorSeedItem[] = [
   },
 ];
 
+const PROFESSOR_PROFILES: Record<string, ProfessorProfileSeed> = {
+  'mehdi-farzinfar': {
+    faculty: 'دانشکده مهندسی برق',
+    specialty: 'سیستم‌های قدرت و شبکه‌های هوشمند',
+    avatar: '/Images/professors/98780302.jpg',
+  },
+  'ali-mottaghi': {
+    faculty: 'دانشکده مهندسی کامپیوتر',
+    specialty: 'بینایی ماشین و یادگیری ماشین',
+    avatar: '/Images/professors/atashinbar.jpg',
+  },
+  'mohammad-asyaei': {
+    faculty: 'دانشکده مهندسی برق',
+    specialty: 'طراحی مدارهای کم‌مصرف و VLSI',
+    avatar: '/Images/professors/hakhani.jpg',
+  },
+  's-hamideh-erfani': {
+    faculty: 'دانشکده مهندسی کامپیوتر',
+    specialty: 'بینایی ماشین، یادگیری ماشین و سیستم‌های اطلاعاتی',
+  },
+  'fahimeh-rafiee': {
+    faculty: 'دانشکده مهندسی برق',
+    specialty: 'مخابرات و پردازش سیگنال',
+  },
+  'asghar-feizi': {
+    faculty: 'دانشکده مهندسی برق',
+    specialty: 'مهندسی برق و سامانه‌های الکترونیکی',
+  },
+  'seyed-hadi-rostamian': {
+    faculty: 'دانشکده مهندسی برق',
+    specialty: 'کنترل، انتقال حرارت و انرژی‌های تجدیدپذیر',
+  },
+  'zohre-karimi': {
+    faculty: 'دانشکده مهندسی کامپیوتر',
+    specialty: 'داده‌کاوی و پردازش زبان طبیعی',
+  },
+  'salehe-abbaspoor': {
+    faculty: 'دانشکده مهندسی کامپیوتر',
+    specialty: 'مهندسی نرم‌افزار',
+  },
+  'ahmad-gholizadeh': {
+    faculty: 'دانشکده فیزیک',
+    specialty: 'فیزیک ماده چگال و نانومواد',
+  },
+  'rashid-vali': {
+    faculty: 'دانشکده فیزیک',
+    specialty: 'فیزیک ماده چگال',
+    avatar: '/Images/professors/hazar.jpg',
+  },
+  'behnam-pourhassan-tanabchi': {
+    faculty: 'دانشکده فیزیک',
+    specialty: 'فیزیک ذرات، میدان‌ها و گرانش',
+    avatar: '/Images/professors/makhonz.jpg',
+  },
+  'motahareh-mohammadpour': {
+    faculty: 'دانشکده مهندسی کامپیوتر',
+    specialty: 'هوش مصنوعی',
+  },
+  's-abolghasem-aghapour': {
+    faculty: 'دانشکده مهندسی کامپیوتر',
+    specialty: 'شبکه‌های کامپیوتری',
+  },
+  'seied-ali-pourmousavi': {
+    faculty: 'دانشکده فیزیک',
+    specialty: 'فیزیک محاسباتی',
+  },
+  'ahmad-soleymanpour': {
+    faculty: 'دانشکده فیزیک',
+    specialty: 'فیزیک نظری',
+  },
+  'kobra-zarei': {
+    faculty: 'دانشکده فیزیک',
+    specialty: 'اپتیک و فوتونیک',
+  },
+  'morteza-jabbari': {
+    faculty: 'دانشکده مهندسی برق',
+    specialty: 'کنترل و اتوماسیون',
+  },
+  'ali-akbar-hassannezhad': {
+    faculty: 'دانشکده مهندسی کامپیوتر',
+    specialty: 'امنیت اطلاعات',
+  },
+  'houshang-khairy': {
+    faculty: 'دانشکده فیزیک',
+    specialty: 'نانوفیزیک',
+  },
+  'nader-taghipour': {
+    faculty: 'دانشکده مهندسی کامپیوتر',
+    specialty: 'علوم داده',
+  },
+  'ebrahim-rahimi': {
+    faculty: 'دانشکده مهندسی برق',
+    specialty: 'سیستم‌های قدرت',
+  },
+};
+
 export async function seedProfessors(
   prisma: PrismaClient,
   adminEmails: string[] = [],
 ) {
   for (const item of PROFESSORS_SEED) {
-    const facultyName = item.faculty ?? UNASSIGNED_FACULTY;
+    const profile = PROFESSOR_PROFILES[item.slug];
+    if (!profile) {
+      throw new Error(`Missing profile seed for professor: ${item.slug}`);
+    }
+
+    const facultyName = profile.faculty;
+    const avatar = profile.avatar ?? DEFAULT_PROFESSOR_AVATAR;
+    const bio = `عضو هیئت علمی دانشگاه دامغان در ${facultyName} با تمرکز بر ${profile.specialty}.`;
     const normalizedEmail = item.email?.toLowerCase().trim() ?? null;
 
     const professor = await prisma.professor.upsert({
@@ -221,13 +317,14 @@ export async function seedProfessors(
             create: { name: facultyName },
           },
         },
-        specialty: item.specialty ?? null,
+        specialty: profile.specialty,
         isFaculty: true,
-        avatar: DEFAULT_PROFESSOR_AVATAR,
+        avatar,
         email: normalizedEmail,
-        facultyName: item.faculty ?? null,
-        researchGroupName: item.researchGroupName ?? null,
+        facultyName,
+        researchGroupName: profile.specialty,
         organizationName: 'دانشگاه دامغان',
+        bio,
       },
       create: {
         slug: item.slug,
@@ -242,13 +339,14 @@ export async function seedProfessors(
             create: { name: facultyName },
           },
         },
-        specialty: item.specialty ?? null,
+        specialty: profile.specialty,
         isFaculty: true,
-        avatar: DEFAULT_PROFESSOR_AVATAR,
+        avatar,
         email: normalizedEmail,
-        facultyName: item.faculty ?? null,
-        researchGroupName: item.researchGroupName ?? null,
+        facultyName,
+        researchGroupName: profile.specialty,
         organizationName: 'دانشگاه دامغان',
+        bio,
       },
     });
 
@@ -266,6 +364,29 @@ export async function seedProfessors(
           role: adminEmails.includes(email) ? UserRole.ADMIN : UserRole.EDITOR,
           professorId: professor.id,
         },
+      });
+    }
+
+    const sourceId = `seed-research-area:${item.slug}`;
+    const activityData = {
+      type: 'حوزه پژوهشی',
+      titleFa: profile.specialty,
+      description: `فعالیت پژوهشی در حوزه ${profile.specialty}`,
+      sortOrder: 5,
+    };
+    const existingActivity = await prisma.professorActivity.findFirst({
+      where: { professorId: professor.id, sourceId },
+      select: { id: true },
+    });
+
+    if (existingActivity) {
+      await prisma.professorActivity.update({
+        where: { id: existingActivity.id },
+        data: activityData,
+      });
+    } else {
+      await prisma.professorActivity.create({
+        data: { professorId: professor.id, sourceId, ...activityData },
       });
     }
 
