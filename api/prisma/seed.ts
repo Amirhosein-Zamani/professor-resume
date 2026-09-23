@@ -3,6 +3,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient, UserRole } from '@prisma/client';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import { seedProfessors } from './professors.seed';
 
 [
   path.resolve(process.cwd(), 'apps/api/.env'),
@@ -90,6 +91,7 @@ const PROFESSOR_FORM_SCHEMA = [
       { label: 'استادیار', value: 'استادیار' },
       { label: 'دانشیار', value: 'دانشیار' },
       { label: 'استاد', value: 'استاد' },
+      { label: 'مربی', value: 'مربی' },
     ],
   },
   {
@@ -316,6 +318,8 @@ async function main() {
   const adminEmails = [adminEmail, secondaryAdminEmail]
     .filter((email): email is string => Boolean(email))
     .map((email) => email.toLowerCase().trim());
+
+  await seedProfessors(prisma, adminEmails);
   const authorEmail = process.env.SEED_AUTHOR_EMAIL || 'author@example.com';
 
   await prisma.user.upsert({
@@ -388,14 +392,14 @@ async function main() {
     await prisma.user.upsert({
       where: { email: professor.email.toLowerCase().trim() },
       update: {
-                role: adminEmails.includes(professor.email.toLowerCase().trim())
-          ? UserRole.ADMIN
-          : UserRole.EDITOR,
         professorId: professor.id,
+        ...(adminEmails.includes(professor.email.toLowerCase().trim())
+          ? { role: UserRole.ADMIN }
+          : {}),
       },
       create: {
         email: professor.email.toLowerCase().trim(),
-                role: adminEmails.includes(professor.email.toLowerCase().trim())
+        role: adminEmails.includes(professor.email.toLowerCase().trim())
           ? UserRole.ADMIN
           : UserRole.EDITOR,
         professorId: professor.id,
