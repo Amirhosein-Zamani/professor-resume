@@ -1,6 +1,7 @@
 // src/modules/auth/services/auth.service.ts
 
 import {
+  BadRequestException,
   Injectable,
   UnauthorizedException,
   HttpException,
@@ -61,19 +62,21 @@ export class AuthService {
     this.assertOtpRequestRateLimit(email, requesterIp);
 
     const user = await this.prisma.user.findUnique({
-      where: {
-        email,
-      },
+      where: { email },
+      select: { email: true },
     });
 
-    if (user) {
-      const otp = await this.otpService.generateOtp(user.email);
-      await this.otpService.sendOtpEmail(user.email, otp);
+    if (!user) {
+      throw new BadRequestException(
+        'این ایمیل در فهرست کاربران داشبورد ثبت نشده است.',
+      );
     }
 
+    const otp = await this.otpService.generateOtp(user.email);
+    await this.otpService.sendOtpEmail(user.email, otp);
+
     return {
-      message:
-        'If this email belongs to an active user, a verification code has been sent.',
+      message: 'Verification code has been sent.',
     };
   }
 
