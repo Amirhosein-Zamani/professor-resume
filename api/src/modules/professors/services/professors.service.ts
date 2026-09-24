@@ -50,6 +50,8 @@ type ProfessorListEntity = Prisma.ProfessorGetPayload<{
   include: typeof professorListInclude;
 }>;
 
+const UNASSIGNED_FACULTY_NAMES = ['تخصیص‌نیافته', 'تخصیص نیافته'];
+
 @Injectable()
 export class ProfessorsService {
   private readonly logger = new Logger(ProfessorsService.name);
@@ -61,7 +63,28 @@ export class ProfessorsService {
   ) {}
 
   async listProfessors(query: ListProfessorsQueryDto = {}) {
+    return this.findProfessors(query, false);
+  }
+
+  async listDashboardProfessors(query: ListProfessorsQueryDto = {}) {
+    return this.findProfessors(query, true);
+  }
+
+  private async findProfessors(
+    query: ListProfessorsQueryDto,
+    includeUnassigned: boolean,
+  ) {
     const filters: Prisma.ProfessorWhereInput[] = [];
+
+    if (!includeUnassigned) {
+      filters.push({
+        facultyRecord: {
+          is: {
+            name: { notIn: UNASSIGNED_FACULTY_NAMES },
+          },
+        },
+      });
+    }
 
     if (query.name) {
       filters.push({

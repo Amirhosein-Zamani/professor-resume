@@ -22,6 +22,12 @@ export const getProfessors = async (params?: GetProfessorsParams) => {
   );
 };
 
+export const getDashboardProfessors = async (params?: GetProfessorsParams) => {
+  return handleRequest<ProfessorListItem[]>(
+    api.get(API_ROUTES.Professors.dashboardList, { params }),
+  );
+};
+
 export const getProfessor = async (professorId: string) => {
   console.log('professorId: ', professorId)
   return handleRequest<Professor>(

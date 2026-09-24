@@ -83,6 +83,28 @@ export class ProfessorsController {
     return this.professorsService.listProfessors(query);
   }
 
+  @ApiCookieAuth()
+  @ApiOperation({
+    summary: 'List professors for dashboard',
+    description:
+      'Returns every professor, including professors without an assigned faculty.',
+  })
+  @ApiOkResponse({
+    type: [ProfessorListItemResponseDto],
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Authentication cookie is missing or invalid.',
+  })
+  @ApiForbiddenResponse({
+    description: 'Only administrators can list all professors.',
+  })
+  @Roles(UserRole.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('dashboard/list')
+  getDashboardProfessors(@Query() query: ListProfessorsQueryDto) {
+    return this.professorsService.listDashboardProfessors(query);
+  }
+
   @ApiOperation({
     summary: 'Get professor detail',
     description: 'Fetches one professor by database id or slug.',

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { getProfessors } from "@/services/professors/Professorsapi";
+import { getDashboardProfessors } from "@/services/professors/Professorsapi";
 import type { ProfessorListItem } from "@/types/professor";
 
 export const INITIAL_VISIBLE_COUNT = 9;
@@ -17,7 +17,7 @@ export function useProfessorsList() {
 
     useEffect(() => {
         let active = true;
-        void getProfessors().then((response) => {
+        void getDashboardProfessors().then((response) => {
             if (!active) return;
             if (response.success) setProfessors(response.data ?? []);
             else setError(response.error || "خطا در دریافت لیست اساتید");

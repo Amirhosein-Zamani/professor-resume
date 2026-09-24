@@ -10,6 +10,7 @@ export const API_ROUTES = {
 
   Professors: {
     list: "/professors",
+    dashboardList: "/professors/dashboard/list",
     create: "/professors",
     detail: (idOrSlug: string) => `/professors/${idOrSlug}`,
     update: (id: string) => `/professors/${id}`,
