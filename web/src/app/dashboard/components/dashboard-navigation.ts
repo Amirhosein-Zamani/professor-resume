@@ -11,7 +11,7 @@ export type DashboardMenuItem = {
 };
 
 export function getDashboardMenu(user: SafeUser | null): DashboardMenuItem[] {
-    if (user?.role === "EDITOR") {
+    if (user?.role === "PROFESSOR") {
         return [
             { title: "داشبورد", href: "/dashboard", icon: LuLayoutDashboard },
             {

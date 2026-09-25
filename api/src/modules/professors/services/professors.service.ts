@@ -169,9 +169,9 @@ export class ProfessorsService {
           include: professorInclude,
         });
 
-      // اگر پروفسور ایمیل داشته باشد، همزمان یک یوزر EDITOR برایش
+      // اگر پروفسور ایمیل داشته باشد، همزمان یک یوزر PROFESSOR برایش
       // ساخته و متصل می‌شود و یک کد OTP برای ورود اولیه برایش ارسال می‌شود.
-      await this.createEditorUserForProfessor(professor);
+      await this.createProfessorUserForProfessor(professor);
 
       return this.toProfessorDetail(professor);
     } catch (error) {
@@ -218,16 +218,16 @@ export class ProfessorsService {
       }
 
       // اگر ایمیل پروفسور تغییر کرده یا برای اولین‌بار ثبت شده،
-      // یوزر EDITOR مرتبط را هم به‌روزرسانی/ایجاد می‌کنیم.
+      // یوزر PROFESSOR مرتبط را هم به‌روزرسانی/ایجاد می‌کنیم.
       if (professor.email && professor.email !== existing.email) {
         await this.prisma.user.deleteMany({
           where: {
             professorId: professor.id,
-            role: UserRole.EDITOR,
+            role: UserRole.PROFESSOR,
             email: { not: professor.email.toLowerCase().trim() },
           },
         });
-        await this.createEditorUserForProfessor(professor);
+        await this.createProfessorUserForProfessor(professor);
       }
 
       return this.toProfessorDetail(professor);
@@ -253,7 +253,7 @@ export class ProfessorsService {
       this.prisma.user.deleteMany({
         where: {
           professorId: id,
-          role: UserRole.EDITOR,
+          role: UserRole.PROFESSOR,
         },
       }),
       this.prisma.professor.delete({
@@ -319,14 +319,14 @@ export class ProfessorsService {
   }
 
   /**
-   * یک یوزر با نقش EDITOR برای پروفسور می‌سازد (اگر از قبل وجود نداشته باشد)
+   * یک یوزر با نقش PROFESSOR برای پروفسور می‌سازد (اگر از قبل وجود نداشته باشد)
    * و آن را به رکورد پروفسور متصل می‌کند، سپس یک کد OTP برای ورود اولیه
    * به ایمیل او ارسال می‌کند. اگر یوزری با این ایمیل از قبل وجود داشته
-   * باشد، فقط به پروفسور متصل و نقشش EDITOR می‌شود (بدون overwrite نقش ADMIN
+   * باشد، فقط به پروفسور متصل و نقشش PROFESSOR می‌شود (بدون overwrite نقش ADMIN
    * موجود در صورتی که از قبل ADMIN بوده — این را عمداً دست‌نخورده می‌گذاریم،
    * پایین توضیح داده شده).
    */
-  private async createEditorUserForProfessor(
+  private async createProfessorUserForProfessor(
     professor: Pick<Professor, 'id' | 'email'>,
   ): Promise<void> {
     if (!professor.email) {
@@ -342,7 +342,7 @@ export class ProfessorsService {
 
       if (existingUser) {
         if (
-          existingUser.role === UserRole.EDITOR &&
+          existingUser.role === UserRole.PROFESSOR &&
           existingUser.professorId !== professor.id
         ) {
           await this.prisma.user.update({
@@ -354,7 +354,7 @@ export class ProfessorsService {
         await this.prisma.user.create({
           data: {
             email,
-            role: UserRole.EDITOR,
+            role: UserRole.PROFESSOR,
             professorId: professor.id,
           },
         });
@@ -366,7 +366,7 @@ export class ProfessorsService {
       // ساخت/ارسال OTP نباید باعث fail شدن کل عملیات ساخت پروفسور شود؛
       // فقط لاگ می‌کنیم تا بعدا قابل بررسی باشد.
       this.logger.error(
-        `Failed to create editor user or send OTP for professor email ${email}`,
+        `Failed to create professor user or send OTP for professor email ${email}`,
         error instanceof Error ? error.stack : String(error),
       );
     }

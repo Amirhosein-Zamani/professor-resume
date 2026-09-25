@@ -30,7 +30,7 @@ export class ProfessorAccessGuard implements CanActivate {
     const professorId = request.params.id;
 
     if (
-      user.role === UserRole.EDITOR &&
+      user.role === UserRole.PROFESSOR &&
       user.professorId &&
       professorId === user.professorId
     ) {
@@ -38,7 +38,7 @@ export class ProfessorAccessGuard implements CanActivate {
     }
 
     throw new ForbiddenException(
-      'Editors can only modify their own professor profile.',
+      'Professors can only modify their own profile.',
     );
   }
 }

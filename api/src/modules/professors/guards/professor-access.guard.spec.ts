@@ -27,15 +27,15 @@ describe('ProfessorAccessGuard', () => {
     );
   });
 
-  it('allows an editor to modify only the linked professor', () => {
-    expect(guard.canActivate(contextFor(UserRole.EDITOR, 'p-1', 'p-1'))).toBe(
+  it('allows a professor to modify only the linked professor', () => {
+    expect(guard.canActivate(contextFor(UserRole.PROFESSOR, 'p-1', 'p-1'))).toBe(
       true,
     );
   });
 
-  it('rejects an editor attempting to modify another professor', () => {
+  it('rejects a professor attempting to modify another professor', () => {
     expect(() =>
-      guard.canActivate(contextFor(UserRole.EDITOR, 'p-1', 'p-2')),
+      guard.canActivate(contextFor(UserRole.PROFESSOR, 'p-1', 'p-2')),
     ).toThrow(ForbiddenException);
   });
 });

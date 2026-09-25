@@ -4,31 +4,19 @@ import { FiCheck, FiX } from "react-icons/fi";
 
 import Select from "@/components/ui/Select";
 import type { UserRole } from "@/types/auth";
-import type { ProfessorListItem } from "@/types/professor";
 import { ROLE_LABELS, ROLE_OPTIONS, roleFromLabel } from "./user-management.constants";
 
 type Props = {
     email: string;
     role: UserRole;
-    professorId: string;
-    professors: ProfessorListItem[];
     submitting: boolean;
     onEmailChange: (value: string) => void;
     onRoleChange: (value: UserRole) => void;
-    onProfessorChange: (value: string) => void;
     onSubmit: () => void;
     onCancel: () => void;
 };
 
 export default function UserForm(props: Props) {
-    const professorOptions = props.professors.map(
-        (item) => `${item.displayName} - ${item.faculty}`,
-    );
-    const selectedProfessor = props.professors.find((item) => item.id === props.professorId);
-    const selectedProfessorLabel = selectedProfessor
-        ? `${selectedProfessor.displayName} - ${selectedProfessor.faculty}`
-        : "";
-
     return (
         <section className="overflow-hidden rounded-2xl border border-card-border bg-card-bg shadow-[0_4px_20px_rgba(30,61,57,0.06)]">
             <header className="flex items-center justify-between border-b border-border bg-base-gray-0 px-5 py-4">
@@ -66,25 +54,8 @@ export default function UserForm(props: Props) {
                     onChange={(value) => props.onRoleChange(roleFromLabel(value))}
                 />
 
-                {props.role === "EDITOR" && (
-                    <Select
-                        label="پروفایل استاد مرتبط"
-                        searchable
-                        searchPlaceholder="جست‌وجوی نام استاد..."
-                        wrapperClassName="md:col-span-2"
-                        value={selectedProfessorLabel}
-                        options={professorOptions}
-                        onChange={(label) => {
-                            const item = props.professors.find(
-                                (professor) => `${professor.displayName} - ${professor.faculty}` === label,
-                            );
-                            props.onProfessorChange(item?.id ?? "");
-                        }}
-                    />
-                )}
-
                 <p className="text-xs leading-6 text-text-muted md:col-span-2">
-                    اتصال پروفایل برای ویرایشگر اختیاری است؛ بدون آن، حساب وارد داشبورد می‌شود اما رزومه‌ای برای ویرایش نخواهد داشت.
+                    برای نقش استاد، پروفایل استاد باید از قبل با همین ایمیل ثبت شده باشد؛ اتصال حساب به پروفایل به‌صورت خودکار انجام می‌شود.
                 </p>
 
                 <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end md:col-span-2">

@@ -1,7 +1,7 @@
 model User {
   id          String     @id @default(uuid())
   email       String     @unique
-  role        UserRole   @default(EDITOR)
+  role        UserRole   @default(PROFESSOR)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   professorId String?    @unique
@@ -12,7 +12,7 @@ model User {
 
 enum UserRole {
   ADMIN
-  EDITOR
+  PROFESSOR
 }
 
 enum FormTarget {

@@ -329,7 +329,7 @@ async function main() {
     },
     create: {
       email: authorEmail.toLowerCase().trim(),
-      role: UserRole.EDITOR,
+      role: UserRole.PROFESSOR,
     },
   });
 
@@ -401,12 +401,12 @@ async function main() {
         email: professor.email.toLowerCase().trim(),
         role: adminEmails.includes(professor.email.toLowerCase().trim())
           ? UserRole.ADMIN
-          : UserRole.EDITOR,
+          : UserRole.PROFESSOR,
         professorId: professor.id,
       },
     });
 
-    console.log(`Editor user created/updated for professor email`);
+    console.log(`Professor user created/updated for professor email`);
   }
 
   await prisma.professorLink.upsert({

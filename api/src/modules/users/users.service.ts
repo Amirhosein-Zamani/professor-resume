@@ -33,36 +33,18 @@ export class UsersService {
 
   async createUser(dto: CreateUserDto) {
     const email = dto.email.trim().toLowerCase();
-
-    if (dto.professorId) {
-      const [professor, assignedUser] = await Promise.all([
-        this.prisma.professor.findUnique({
-          where: { id: dto.professorId },
-          select: { id: true },
-        }),
-        this.prisma.user.findUnique({
-          where: { professorId: dto.professorId },
-          select: { id: true },
-        }),
-      ]);
-
-      if (!professor) {
-        throw new BadRequestException('پروفایل استاد انتخاب‌شده وجود ندارد.');
-      }
-
-      if (assignedUser) {
-        throw new ConflictException(
-          'پروفایل استاد انتخاب‌شده قبلاً به یک حساب متصل است.',
-        );
-      }
-    }
+    const role = dto.role ?? UserRole.PROFESSOR;
+    const professorId =
+      role === UserRole.PROFESSOR
+        ? await this.findProfessorIdByEmail(email)
+        : null;
 
     try {
       return await this.prisma.user.create({
         data: {
           email,
-          role: dto.role ?? UserRole.EDITOR,
-          professorId: dto.professorId ?? null,
+          role,
+          professorId,
         },
         ...managedUserQuery,
       });
@@ -104,14 +86,52 @@ export class UsersService {
       });
 
       if (adminCount <= 1) {
-        throw new ConflictException('نقش آخرین مدیر سامانه قابل تغییر نیست.');
+        throw new ConflictException('نقش آخرین مدیرکل قابل تغییر نیست.');
       }
     }
 
+    const professorId =
+      role === UserRole.PROFESSOR
+        ? existing.professorId ??
+          (await this.findProfessorIdByEmail(existing.email, existing.id))
+        : existing.professorId;
+
     return this.prisma.user.update({
       where: { id },
-      data: { role },
+      data: { role, professorId },
       ...managedUserQuery,
     });
+  }
+
+  private async findProfessorIdByEmail(
+    email: string,
+    assignedUserId?: string,
+  ): Promise<string> {
+    const professor = await this.prisma.professor.findFirst({
+      where: {
+        email: {
+          equals: email,
+          mode: 'insensitive',
+        },
+      },
+      select: {
+        id: true,
+        user: { select: { id: true } },
+      },
+    });
+
+    if (!professor) {
+      throw new BadRequestException(
+        'برای نقش استاد، ابتدا باید پروفایل استادی با همین ایمیل ایجاد شود.',
+      );
+    }
+
+    if (professor.user && professor.user.id !== assignedUserId) {
+      throw new ConflictException(
+        'پروفایل استاد با این ایمیل قبلاً به حساب دیگری متصل است.',
+      );
+    }
+
+    return professor.id;
   }
 }

@@ -5,10 +5,8 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 import { useAuth } from "@/context/AuthContext";
-import { getProfessors } from "@/services/professors/Professorsapi";
 import { createUser, getUsers, updateUserRole } from "@/services/users/UsersApi";
 import type { UserRole } from "@/types/auth";
-import type { ProfessorListItem } from "@/types/professor";
 import type { ManagedUser } from "@/types/user-management";
 
 export type PendingRoleChange = {
@@ -20,23 +18,18 @@ export function useUsers() {
     const router = useRouter();
     const { user: currentUser, isLoading: isAuthLoading } = useAuth();
     const [users, setUsers] = useState<ManagedUser[]>([]);
-    const [professors, setProfessors] = useState<ProfessorListItem[]>([]);
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(true);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [email, setEmail] = useState("");
-    const [role, setRole] = useState<UserRole>("EDITOR");
-    const [professorId, setProfessorId] = useState("");
+    const [role, setRole] = useState<UserRole>("PROFESSOR");
     const [submitting, setSubmitting] = useState(false);
     const [changingRole, setChangingRole] = useState(false);
     const [pendingRoleChange, setPendingRoleChange] = useState<PendingRoleChange | null>(null);
 
     const load = useCallback(async () => {
         setLoading(true);
-        const [usersResponse, professorsResponse] = await Promise.all([
-            getUsers(),
-            getProfessors(),
-        ]);
+        const usersResponse = await getUsers();
 
         if (usersResponse.success && usersResponse.data) {
             setUsers(usersResponse.data);
@@ -44,9 +37,6 @@ export function useUsers() {
             toast.error(usersResponse.message || usersResponse.error || "دریافت کاربران انجام نشد.");
         }
 
-        if (professorsResponse.success && professorsResponse.data) {
-            setProfessors(professorsResponse.data);
-        }
         setLoading(false);
     }, []);
 
@@ -69,15 +59,9 @@ export function useUsers() {
         );
     }, [search, users]);
 
-    const availableProfessors = useMemo(() => {
-        const assignedIds = new Set(users.map((item) => item.professorId).filter(Boolean));
-        return professors.filter((professor) => !assignedIds.has(professor.id));
-    }, [professors, users]);
-
     const resetForm = () => {
         setEmail("");
-        setRole("EDITOR");
-        setProfessorId("");
+        setRole("PROFESSOR");
         setIsCreateOpen(false);
     };
 
@@ -92,7 +76,6 @@ export function useUsers() {
         const response = await createUser({
             email: normalizedEmail,
             role,
-            ...(role === "EDITOR" && professorId ? { professorId } : {}),
         });
         setSubmitting(false);
 
@@ -130,20 +113,17 @@ export function useUsers() {
     return {
         currentUser,
         users: visibleUsers,
-        availableProfessors,
         search,
         loading,
         isCreateOpen,
         email,
         role,
-        professorId,
         submitting,
         changingRole,
         pendingRoleChange,
         setSearch,
         setEmail,
         setRole,
-        setProfessorId,
         setPendingRoleChange,
         submitCreate,
         confirmRoleChange,

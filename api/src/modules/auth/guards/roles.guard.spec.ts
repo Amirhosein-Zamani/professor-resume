@@ -30,7 +30,7 @@ describe('RolesGuard', () => {
     } as unknown as Reflector;
     const guard = new RolesGuard(reflector);
 
-    expect(() => guard.canActivate(contextFor(UserRole.EDITOR))).toThrow(
+    expect(() => guard.canActivate(contextFor(UserRole.PROFESSOR))).toThrow(
       ForbiddenException,
     );
   });

@@ -13,7 +13,7 @@ export class UserManagementResponseDto {
   @ApiProperty()
   id!: string;
 
-  @ApiProperty({ example: 'editor@example.com' })
+  @ApiProperty({ example: 'professor@example.com' })
   email!: string;
 
   @ApiProperty({ enum: UserRole })

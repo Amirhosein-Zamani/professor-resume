@@ -142,7 +142,7 @@ export class ProfessorsController {
     description:
       'multipart/form-data: تمام فیلدهای CreateProfessorDto به‌صورت فیلدهای متنی فرم ارسال می‌شوند ' +
       '(links باید JSON.stringify شده به‌عنوان یک فیلد متنی ارسال شود)، و فایل CV (اختیاری) در فیلد "cv". ' +
-      'در صورتی که ایمیل ارسال شود، به‌صورت خودکار یک یوزر با نقش EDITOR برای این استاد ساخته شده ' +
+      'در صورتی که ایمیل ارسال شود، به‌صورت خودکار یک یوزر با نقش PROFESSOR برای این استاد ساخته شده ' +
       'و یک کد OTP برای ورود اولیه به ایمیل او ارسال می‌شود.',
   })
   @ApiConsumes('multipart/form-data')

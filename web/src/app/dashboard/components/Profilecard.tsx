@@ -6,7 +6,7 @@ import ProfileEditor from "./ProfileEditor";
 import { useProfileCard } from "./useProfileCard";
 
 const ROLE_LABELS: Record<string, string> = {
-    ADMIN: "مدیر سامانه",
+    ADMIN: "مدیرکل",
     PROFESSOR: "استاد",
 };
 

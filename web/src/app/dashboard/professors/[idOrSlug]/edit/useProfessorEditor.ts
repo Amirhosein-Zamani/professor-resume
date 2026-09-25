@@ -33,7 +33,7 @@ export function useProfessorEditor(idOrSlug: string) {
 
             const canEdit =
                 user?.role === "ADMIN" ||
-                (user?.role === "EDITOR" && user.professorId === response.data.id);
+                (user?.role === "PROFESSOR" && user.professorId === response.data.id);
             if (!canEdit) {
                 router.replace("/dashboard");
                 return;

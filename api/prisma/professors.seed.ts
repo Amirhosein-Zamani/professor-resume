@@ -361,7 +361,7 @@ export async function seedProfessors(
         },
         create: {
           email,
-          role: adminEmails.includes(email) ? UserRole.ADMIN : UserRole.EDITOR,
+          role: adminEmails.includes(email) ? UserRole.ADMIN : UserRole.PROFESSOR,
           professorId: professor.id,
         },
       });

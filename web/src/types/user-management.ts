@@ -16,5 +16,4 @@ export type ManagedUser = {
 export type CreateManagedUserPayload = {
     email: string;
     role: UserRole;
-    professorId?: string;
 };

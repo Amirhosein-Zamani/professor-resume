@@ -24,7 +24,7 @@ function RoleActions({ account, currentUserId, onChange }: {
     const isCurrent = account.id === currentUserId;
     return (
         <div className="inline-flex rounded-xl border border-border bg-base-gray-0 p-1">
-            {(["EDITOR", "ADMIN"] as UserRole[]).map((role) => (
+            {(["PROFESSOR", "ADMIN"] as UserRole[]).map((role) => (
                 <button
                     key={role}
                     type="button"

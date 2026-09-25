@@ -21,15 +21,9 @@ export default function UsersPage() {
                 <UserForm
                     email={state.email}
                     role={state.role}
-                    professorId={state.professorId}
-                    professors={state.availableProfessors}
                     submitting={state.submitting}
                     onEmailChange={state.setEmail}
-                    onRoleChange={(role) => {
-                        state.setRole(role);
-                        if (role === "ADMIN") state.setProfessorId("");
-                    }}
-                    onProfessorChange={state.setProfessorId}
+                    onRoleChange={state.setRole}
                     onSubmit={state.submitCreate}
                     onCancel={state.closeCreate}
                 />

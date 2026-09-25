@@ -25,7 +25,7 @@ export function useProfessorDetail(idOrSlug: string) {
             if (
                 !response.success ||
                 !response.data ||
-                (user?.role === "EDITOR" && user.professorId !== response.data.id)
+                (user?.role === "PROFESSOR" && user.professorId !== response.data.id)
             ) {
                 router.replace("/dashboard");
                 return;

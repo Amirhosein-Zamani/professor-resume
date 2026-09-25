@@ -4,8 +4,8 @@ import { FiMail, FiShield, FiUser } from "react-icons/fi";
 import { useAuth } from "@/context/AuthContext";
 
 const ROLE_LABELS: Record<string, string> = {
-    ADMIN: "مدیر سامانه",
-    EDITOR: "استاد",
+    ADMIN: "مدیرکل",
+    PROFESSOR: "استاد",
 };
 
 function formatDate(iso?: string) {

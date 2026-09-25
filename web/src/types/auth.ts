@@ -15,7 +15,7 @@ export type VerifyOtpResponse = {
   user: SafeUser;
 };
 
-export type UserRole = "ADMIN" | "EDITOR";
+export type UserRole = "ADMIN" | "PROFESSOR";
 
 export type SafeUser = {
   id: string;
