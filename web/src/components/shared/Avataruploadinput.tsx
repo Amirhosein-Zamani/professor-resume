@@ -16,8 +16,12 @@ type AvatarUploadInputProps = {
 };
 
 const MAX_FILE_SIZE_MB = 5;
+const AVATAR_WIDTH = 800;
+const AVATAR_HEIGHT = 1000;
+const AVATAR_QUALITY = 0.85;
+const ALLOWED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 
-function fileToPlainBase64(file: File): Promise<string> {
+function blobToPlainBase64(blob: Blob): Promise<string> {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
 
@@ -28,8 +32,80 @@ function fileToPlainBase64(file: File): Promise<string> {
         };
 
         reader.onerror = () => reject(reader.error);
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(blob);
     });
+}
+
+function loadImage(file: File): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+        const objectUrl = URL.createObjectURL(file);
+        const image = new Image();
+
+        image.onload = () => {
+            URL.revokeObjectURL(objectUrl);
+            resolve(image);
+        };
+        image.onerror = () => {
+            URL.revokeObjectURL(objectUrl);
+            reject(new Error("Invalid image"));
+        };
+        image.src = objectUrl;
+    });
+}
+
+async function standardizeAvatar(file: File): Promise<string> {
+    const image = await loadImage(file);
+    const canvas = document.createElement("canvas");
+    canvas.width = AVATAR_WIDTH;
+    canvas.height = AVATAR_HEIGHT;
+
+    const context = canvas.getContext("2d");
+    if (!context) {
+        throw new Error("Canvas is not available");
+    }
+
+    const sourceWidth = image.naturalWidth;
+    const sourceHeight = image.naturalHeight;
+    const targetRatio = AVATAR_WIDTH / AVATAR_HEIGHT;
+    const sourceRatio = sourceWidth / sourceHeight;
+
+    let sx = 0;
+    let sy = 0;
+    let sw = sourceWidth;
+    let sh = sourceHeight;
+
+    if (sourceRatio > targetRatio) {
+        sw = sourceHeight * targetRatio;
+        sx = (sourceWidth - sw) / 2;
+    } else if (sourceRatio < targetRatio) {
+        sh = sourceWidth / targetRatio;
+        sy = (sourceHeight - sh) / 2;
+    }
+
+    context.drawImage(
+        image,
+        sx,
+        sy,
+        sw,
+        sh,
+        0,
+        0,
+        AVATAR_WIDTH,
+        AVATAR_HEIGHT,
+    );
+
+    const blob = await new Promise<Blob>((resolve, reject) => {
+        canvas.toBlob(
+            (result) => {
+                if (result) resolve(result);
+                else reject(new Error("Image conversion failed"));
+            },
+            "image/webp",
+            AVATAR_QUALITY,
+        );
+    });
+
+    return blobToPlainBase64(blob);
 }
 
 export default function AvatarUploadInput({
@@ -47,8 +123,8 @@ export default function AvatarUploadInput({
     const previewSrc = toAvatarSrc(value);
 
     const processFile = async (file: File) => {
-        if (!file.type.startsWith("image/")) {
-            toast.error("لطفاً فقط فایل تصویری انتخاب کنید.");
+        if (!ALLOWED_IMAGE_TYPES.has(file.type)) {
+            toast.error("فرمت تصویر باید JPG، PNG یا WebP باشد.");
             return;
         }
 
@@ -60,9 +136,9 @@ export default function AvatarUploadInput({
         setIsProcessing(true);
 
         try {
-            const base64 = await fileToPlainBase64(file);
+            const base64 = await standardizeAvatar(file);
             onChange(base64);
-            toast.success("تصویر با موفقیت آپلود شد");
+            toast.success("تصویر بارگذاری و استاندارد شد");
         } catch {
             toast.error("خطا در پردازش تصویر.");
         } finally {
@@ -204,7 +280,8 @@ export default function AvatarUploadInput({
                     </div>
 
                     <p className="text-xs text-[var(--color-text-muted)]">
-                        فرمت JPG یا PNG، حداکثر {MAX_FILE_SIZE_MB} مگابایت. 
+                        فرمت JPG، PNG یا WebP، حداکثر {MAX_FILE_SIZE_MB} مگابایت.
+                        تصویر به‌صورت خودکار با نسبت ۴:۵ و اندازه {AVATAR_WIDTH}×{AVATAR_HEIGHT} استاندارد می‌شود.
                         <span className="hidden sm:inline"> یا فایل را بکشید و رها کنید.</span>
                     </p>
                 </div>
@@ -212,7 +289,7 @@ export default function AvatarUploadInput({
                 <input
                     ref={fileInputRef}
                     type="file"
-                    accept="image/*"
+                    accept="image/jpeg,image/png,image/webp"
                     required={required}
                     onChange={handleFileSelect}
                     className="hidden"

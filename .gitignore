@@ -1,3 +1,4 @@
 .env.production
 backups/
 *.log
+package-lock.json

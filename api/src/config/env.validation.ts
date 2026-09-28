@@ -22,10 +22,10 @@ export const envValidationSchema = Joi.object({
   OTP_HASH_SECRET: Joi.string().min(32).optional(),
   OTP_RESEND_COOLDOWN_SECONDS: Joi.number().integer().min(10).default(60),
   OTP_RATE_LIMIT_WINDOW_SECONDS: Joi.number().integer().min(60).default(900),
-  OTP_RATE_LIMIT_EMAIL_MAX: Joi.number().integer().min(1).default(3),
-  OTP_RATE_LIMIT_IP_MAX: Joi.number().integer().min(1).default(10),
-  OTP_VERIFY_RATE_LIMIT_EMAIL_MAX: Joi.number().integer().min(1).default(5),
-  OTP_VERIFY_RATE_LIMIT_IP_MAX: Joi.number().integer().min(1).default(20),
+  OTP_RATE_LIMIT_EMAIL_MAX: Joi.number().integer().min(1).default(20),
+  OTP_RATE_LIMIT_IP_MAX: Joi.number().integer().min(1).default(50),
+  OTP_VERIFY_RATE_LIMIT_EMAIL_MAX: Joi.number().integer().min(1).default(15),
+  OTP_VERIFY_RATE_LIMIT_IP_MAX: Joi.number().integer().min(1).default(50),
   GOLESTAN_RATE_LIMIT_WINDOW_SECONDS: Joi.number()
     .integer()
     .min(60)
